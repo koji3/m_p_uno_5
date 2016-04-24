@@ -22,6 +22,7 @@ class Lista{
 	
 private:
    Celda * cabecera;		    			
+   int num_elementos;
 public:
 	
 /// Construye una lista vacia (0 elementos)

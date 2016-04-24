@@ -1,32 +1,66 @@
 #include <string>
 #include <fstream>
+#include<iostream>
 #include "lista.h"
 
 using namespace std;
 
-Lista::Lista(){
 
+Lista::Lista(){
+	cabecera=new Celda;
+	cabecera->datos="";
+	cabecera->siguiente=0;
+	num_elementos=0;
 }
    
 Lista::Lista(string valor){
-
+	cabecera=new Celda;
+	cabecera->datos="";
+	
+	Celda *nueva=new Celda();
+	nueva->datos=valor;
+	nueva->siguiente=0;
+	cabecera->siguiente=nueva;
+	num_elementos=1;
 }
 	
 
 void Lista::destruir(){
-
+	Celda *actual=cabecera;
+	while(actual->siguiente!=0){
+		Celda *sig = actual->siguiente;
+		delete actual;
+		actual=sig;
+		
+	}
+	delete actual;
+	num_elementos=0;
 }  
 
 void Lista::insertar(string valor){
-		
+	Celda *nueva=new Celda;
+	Celda *ultima=cabecera;
+	nueva->datos=valor;
+	nueva->siguiente=0;
+	while(ultima->siguiente!=0){
+		ultima=ultima->siguiente;
+	}
+	ultima->siguiente=nueva;
+	num_elementos++;
 }
 
 string Lista::getCelda(int pos) const{
-
+	Celda *actual=cabecera;
+	int contador=0;
+	while(contador<=pos){
+		actual=actual->siguiente;
+		contador++;
+	}
+	return actual->datos;
 }
 
 int Lista::longitud() const{
-
+	return num_elementos;
 }
 
 /**

@@ -5,7 +5,7 @@
 
 #ifndef _IMAGEN_H_
 #define _IMAGEN_H_
-
+#include"lista.h"
 typedef unsigned char byte; ///< byte = 8bits almacenado en un unsigned char
 
 /**
@@ -19,10 +19,7 @@ private:
 public:
 /// Construye una imagen vacía (0 filas, 0 columnas)
    Imagen(); 
-   
-  
-/// Destruye una imagen 
-   ~Imagen();
+
 
 /**
 @brief Construye una imagen negra de tamaño @a filas x @a columnas
@@ -136,7 +133,7 @@ Lee desde disco los datos de la imagen llamada @a nombreFichero y la guarda en l
 
 Extrae de la imagen el plano de la imagen del bit indicado por @a k, despues devuelve como una nueva imagen el plano resultante.    
 */
-   Imagen plano(int k);
+   Imagen *plano(int k);
    
 /**
 @brief Dada una imagen, se convierte equivalente utilizando caracteres ASCII
@@ -149,6 +146,10 @@ Extrae de la imagen el plano de la imagen del bit indicado por @a k, despues dev
    
    bool aArteASCII(const char grises[], char arteASCII[], int maxlong);
    
+   
+	bool listaAArteASCII(const Lista celdas);
+	
+	void destruir();
 };
 
 #endif

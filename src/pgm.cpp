@@ -112,30 +112,47 @@ bool escribirPGMBinario (const char nombre[], const unsigned char datos[], int f
 }
 
 bool leerPGMTexto (const char nombre[], unsigned char datos[], int& filas, int& columnas){
-  bool exito = false;
-  int contador = 0;
-  filas = 0;
-  int c;
-  columnas = 0;
-  string linea;
-    ifstream fe;
-    fe.open(nombre);
-    if(LeerTipo(fe)==IMG_PGM_TEXTO){
-        getline(fe, linea); // Despreciar primera fila;
-        fe >> filas;        // ASIGNAR FILAS Y COLUMNAS
-        fe >> columnas;
+//  bool exito = false;
+//  int contador = 0;
+//  filas = 0;
+//  int c;
+//  columnas = 0;
+//  string linea;
+//    ifstream fe;
+//    fe.open(nombre);
+//    if(LeerTipo(fe)==IMG_PGM_TEXTO){
+//        getline(fe, linea); // Despreciar primera fila;
+//        fe >> filas;        // ASIGNAR FILAS Y COLUMNAS
+//        fe >> columnas;
 
-        while(contador <filas*columnas){
-          fe >> c;
-          datos[contador]=(char)c;    //ASIGNAR DATOS AL VECTOR
-          contador ++;
-        }
-        exito = true;
-    }
-    else{
-      exito = false;
-    }
-    return exito;
+//        while(contador <filas*columnas){
+//          fe >> c;
+//          datos[contador]=c;    //ASIGNAR DATOS AL VECTOR
+//          contador ++;
+//        }
+//        exito = true;
+//    }
+//    else{
+//      exito = false;
+//    }
+//    return exito;
+
+	bool exito= false;
+	filas=0;
+	columnas=0;
+	int c;
+	int contador = 0;
+	ifstream f(nombre);
+	if (LeerTipo(f)==IMG_PGM_TEXTO)
+    	if (LeerCabecera (f, filas, columnas)){
+			while(contador <filas*columnas){
+				f >> c;
+				datos[contador]=(char)c;    //ASIGNAR DATOS AL VECTOR
+				contador ++;
+				}
+			exito = true;
+		}
+	return exito;
 }
 
 bool escribirPGMTexto (const char nombre[], const unsigned char datos[], int filas, int columnas){

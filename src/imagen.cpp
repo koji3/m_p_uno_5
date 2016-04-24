@@ -1,8 +1,13 @@
 #include"imagen.h"
+#include"lista.h"
 #include"pgm.h"
 #include"byte.h"
+#include <stdlib.h> 
+#include<stdio.h>
 #include<iostream>
+#include<fstream>
 #include <cstring> 
+#include <string.h> 
 
 using namespace std;
 
@@ -13,14 +18,10 @@ Imagen::Imagen(){
 }
 
 Imagen::Imagen(int filas, int columnas){
+    datos=0;
     crear(filas,columnas);
 }
 
-Imagen::~Imagen(){
-	if(datos!=0){ delete [] datos; }
-	ncolumnas=0;
-	nfilas=0;
-}
 
 int Imagen::filas(){
     return nfilas;
@@ -49,7 +50,6 @@ byte Imagen::getPos(int i){
 void Imagen::crear(int filas, int columnas){
     this->nfilas = filas;
     this->ncolumnas = columnas;
-    cerr << "Creando" <<endl;
     if(datos!=0){ delete [] datos; }
     datos=new byte[filas*columnas];
     for(int i=0;i<filas*columnas;i++){ 
@@ -58,16 +58,21 @@ void Imagen::crear(int filas, int columnas){
 }
 
  bool Imagen::leerImagen(const char nombreFichero[]){
-     TipoImagen tipo = infoPGM(nombreFichero,this->nfilas,this->ncolumnas);
-     if(infoPGM(nombreFichero,this->nfilas,this->ncolumnas)==IMG_PGM_BINARIO){
+     int f, c;
+     TipoImagen tipo = infoPGM(nombreFichero,f,c);
+     this->crear(f,c); 
+     if(tipo==IMG_PGM_BINARIO){
          leerPGMBinario(nombreFichero,datos,this->nfilas,this->ncolumnas);
          return true;
-     }else if(infoPGM(nombreFichero,this->nfilas,this->ncolumnas)==IMG_PGM_TEXTO){
-         leerPGMTexto(nombreFichero,datos,this->nfilas,this->ncolumnas);
-         return true;
+     }else{
+     	 if(tipo==IMG_PGM_TEXTO){
+		     leerPGMTexto(nombreFichero,datos,f,c);
+		     return true;
+	     }
      }
-     else
-         return false;
+	
+	return false;
+     
  }
  
 bool Imagen::escribirImagen(const char nombreFichero[], bool esBinario){
@@ -78,8 +83,9 @@ bool Imagen::escribirImagen(const char nombreFichero[], bool esBinario){
     }
 }
 
-Imagen Imagen::plano ( int k ){
-    Imagen aux(nfilas,ncolumnas);
+Imagen *Imagen::plano ( int k ){
+    Imagen *aux= new Imagen(nfilas,ncolumnas);
+    //aux.crear;
     for(int y=0; y<nfilas*ncolumnas; y++){
     	bytaso::byte nuevo;
     	bytaso::apagar(nuevo);
@@ -87,7 +93,7 @@ Imagen Imagen::plano ( int k ){
             bytaso::on(nuevo,7);
             
         }
-        aux.setPos(y,nuevo);
+        aux->setPos(y,nuevo);
 
     }
     return aux;
@@ -111,4 +117,38 @@ bool Imagen::aArteASCII(const char grises[], char arteASCII[], int maxlong){
 	
 	return exito;
 }
+
+bool Imagen::listaAArteASCII(const Lista celdas){
+	const int TAM=100000;
+    char arteASCII[TAM]; 
+    bool exito=true;
+	for(int x=0; x<celdas.longitud(); x++){
+		string gris = celdas.getCelda(x);
+		const char *gris_char = gris.c_str();
+		//strcpy(gris_char, gris.c_str());
+		
+		if(this->aArteASCII(gris_char, arteASCII, TAM)){
+		    	char nombre_aux[255];
+	    		ofstream fsalida;
+		    	sprintf(nombre_aux, "%s%d%s", "ascii",x,".txt");
+				fsalida.open(nombre_aux);
+				fsalida << arteASCII;
+				fsalida.close();
+			}else{
+				cout << "La conversión " << x << " no ha sido posible" << endl;  
+				exito= false;
+			}
+	}
+	return exito;
+}
+
+void Imagen::destruir(){
+	if(datos!=0){ delete [] datos; }
+	ncolumnas=0;
+	nfilas=0;
+}
+
+
+
+
 

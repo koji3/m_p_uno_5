@@ -52,7 +52,7 @@ int main(){
 	}else{
 		cerr << "Error lista de grises " << ficheroGrises << endl;
 	}
-	
+
     origen.destruir();   // liberar memoria imagen
-	
+
 }
