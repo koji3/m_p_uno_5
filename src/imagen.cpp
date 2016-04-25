@@ -48,9 +48,9 @@ byte Imagen::getPos(int i){
 }
 
 void Imagen::crear(int filas, int columnas){
+    if(datos!=0){ destruir(); }
     this->nfilas = filas;
     this->ncolumnas = columnas;
-    if(datos!=0){ delete [] datos; }
     datos=new byte[filas*columnas];
     for(int i=0;i<filas*columnas;i++){ 
         datos[i] = 0;
@@ -118,17 +118,17 @@ bool Imagen::aArteASCII(const char grises[], char arteASCII[], int maxlong){
 	return exito;
 }
 
-bool Imagen::listaAArteASCII(const Lista celdas){
-	const int TAM=100000;
-    char arteASCII[TAM]; 
+bool Imagen::listaAArteASCII(const Lista &celdas){
+	//const int TAM=100000;
+    char * arteASCII= new char[nfilas*(ncolumnas+1)]; 
     bool exito=true;
 	for(int x=0; x<celdas.longitud(); x++){
 		string gris = celdas.getCelda(x);
 		const char *gris_char = gris.c_str();
 		//strcpy(gris_char, gris.c_str());
 		
-		if(this->aArteASCII(gris_char, arteASCII, TAM)){
-		    	char nombre_aux[255];
+		if(this->aArteASCII(gris_char, arteASCII, nfilas*(ncolumnas+1))){
+		    	char nombre_aux[255]="";
 	    		ofstream fsalida;
 		    	sprintf(nombre_aux, "%s%d%s", "ascii",x,".txt");
 				fsalida.open(nombre_aux);
@@ -139,15 +139,20 @@ bool Imagen::listaAArteASCII(const Lista celdas){
 				exito= false;
 			}
 	}
+	delete []arteASCII;
 	return exito;
 }
 
 void Imagen::destruir(){
 	if(datos!=0){ delete [] datos; }
 	ncolumnas=0;
+	datos=0;
 	nfilas=0;
 }
 
+Imagen::~Imagen(){
+	destruir();
+}
 
 
 

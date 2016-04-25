@@ -34,16 +34,16 @@ int main(){
 		return 1;
     }
 	
-	cout << "Introduzca el nombre de fichero con el conjunto de caracteres para realizar la conversion: ";
+	cerr << "Introduzca el nombre de fichero con el conjunto de caracteres para realizar la conversion: ";
 	leelinea(ficheroGrises);
 	
 	// Leer cadenas desde fichero
 	if (celdas.leerLista(ficheroGrises)){	
 		// realizar las conversiones
 		if (origen.listaAArteASCII(celdas)){
-			cout << "Exito en la conversion." << endl;
-			cout << "Chequee los ficheros asciiX.txt" << endl;
-			cout << endl;
+			cerr << "Exito en la conversion." << endl;
+			cerr << "Chequee los ficheros asciiX.txt" << endl;
+			cerr << endl;
 		}else{
 			cerr << "La conversion no ha sido posible" << endl;
 			cerr << endl;
@@ -52,7 +52,6 @@ int main(){
 	}else{
 		cerr << "Error lista de grises " << ficheroGrises << endl;
 	}
-
     origen.destruir();   // liberar memoria imagen
 
 }

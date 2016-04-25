@@ -25,7 +25,7 @@ int main(){;
 		cerr << "Error guardando la imagen plano6.pgm\n";
 		return 1;
 	}	
-	
+	plano.destruir();
 	plano = *origen.plano(0);
 	
 	// Guardar la imagen plano en el fichero plano0.pgm (texto)
@@ -37,6 +37,7 @@ int main(){;
 		cerr << "Error guardando la imagen plano0.pgm\n";
 		return 1;
 	}	
-
+plano.destruir();
+origen.destruir();
 	return 0;
 }

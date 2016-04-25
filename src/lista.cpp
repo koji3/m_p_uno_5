@@ -12,6 +12,12 @@ Lista::Lista(){
 	cabecera->siguiente=0;
 	num_elementos=0;
 }
+
+Lista::~Lista(){
+	if(cabecera!=0){
+		destruir();
+	}
+}
    
 Lista::Lista(string valor){
 	cabecera=new Celda;
@@ -26,15 +32,20 @@ Lista::Lista(string valor){
 	
 
 void Lista::destruir(){
-	Celda *actual=cabecera;
-	while(actual->siguiente!=0){
-		Celda *sig = actual->siguiente;
-		delete actual;
-		actual=sig;
+	if(cabecera!=0){
+		Celda *actual=cabecera;
+		while(actual->siguiente!=0){
+			Celda *sig = actual->siguiente;
+			cerr << actual << "  " << actual->datos << " " << actual->siguiente << endl;
+			delete actual;
+			actual=sig;
 		
+		}
+		//cerr << actual << "  " << actual->datos << " " << actual->siguiente << endl;
+		delete actual;
+		cabecera=0;
+		num_elementos=0;
 	}
-	delete actual;
-	num_elementos=0;
 }  
 
 void Lista::insertar(string valor){
